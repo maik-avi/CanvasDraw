@@ -10,6 +10,11 @@ import java.util.Map;
 @Repository
 public class UserRepoImpl implements UserRepo{
 
+    public UserRepoImpl() {
+        save(new User("Bill", "bill", "12345"));
+        save(new User("Tom", "tom", "abcde"));
+    }
+
     private final Map<String, User> users = new HashMap<>();
 
     @Override

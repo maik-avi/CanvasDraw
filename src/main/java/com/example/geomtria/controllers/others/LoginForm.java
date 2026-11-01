@@ -29,4 +29,5 @@ public class LoginForm {
     public void setUsername(String message) {
         this.username = message;
     }
+
 }

@@ -6,16 +6,21 @@
     <title>Document</title>
 </head>
 <body>
-<form method="post" th:object="${loginForm}">
-    NOM D'USUARI
-    <br>
-    <input type="text" name="username">
-    <br>
-    PASSWORD
-    <br>
-    <input type="password" name="password">
-    <br>
-    <input type="submit">
+<form method="post"
+      th:action="@{/login}"
+      th:object="${loginForm}">
+
+    <label>Nom d'usuari</label>
+    <input type="text" th:field="*{username}">
+    <p th:errors="*{username}"></p>
+
+    <label>Password</label>
+    <input type="password" th:field="*{password}">
+    <p th:errors="*{password}"></p>
+
+    <p th:if="${message != null}" th:text="${message}"></p>
+
+    <button type="submit">Entrar</button>
 </form>
 </body>
 </html>

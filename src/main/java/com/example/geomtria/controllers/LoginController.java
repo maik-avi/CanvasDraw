@@ -19,7 +19,8 @@ public class LoginController {
     LoginService loginService;
 
     @GetMapping("/login")
-    public String login() {
+    public String login(Model model) {
+        model.addAttribute("loginForm", new LoginForm());
         return "login";
     }
 
@@ -32,11 +33,16 @@ public class LoginController {
             return "login";
         }
 
+
         String username = loginForm.getUsername();
         String password = loginForm.getPassword();
-        if (loginService.checkLogin(username, password))
-            session.setAttribute("username", loginForm.getUsername());
+        if (loginService.checkLogin(username, password)) {
+            session.setAttribute("username", username);
+            return "redirect:/dibuixarGeometria";
+        }
+
         model.addAttribute("message", "Usuari/pass incorrectes");
         return "login";
+
     }
 }
