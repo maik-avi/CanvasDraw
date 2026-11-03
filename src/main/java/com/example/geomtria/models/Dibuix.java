@@ -15,6 +15,14 @@ public class Dibuix {
 
     private List<Figura> figures = new ArrayList<>();
 
+    public List<Figura> getFigures() {
+        return figures;
+    }
+
+    public void setFigures(List<Figura> figures) {
+        this.figures = figures;
+    }
+
     public Dibuix(String nom, String usernamePropietari,int amplada, int alcada) {
         this.nom = nom;
         this.usernamePropietari = usernamePropietari;

@@ -3,7 +3,10 @@ package com.example.geomtria.controllers.services;
 
 import com.example.geomtria.controllers.repos.DibuixRepo;
 import com.example.geomtria.models.Dibuix;
+import com.example.geomtria.models.Figura;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 import java.util.*;
 import org.springframework.stereotype.Service;
 import java.util.UUID;
@@ -40,5 +43,15 @@ public class DibuixService {
 
     public List<Dibuix> llistaPersonals(String username) {
         return dibuixRepo.findByUsernamePropietari(username);
+    }
+
+    public Dibuix cercarPerId(Long id) {
+        return dibuixRepo.findById(id);
+    }
+
+    public void desarFigures(Dibuix dibuix, List<Figura> figures) {
+        dibuix.setFigures(figures);
+        dibuix.setDataModificacio(LocalDateTime.now());
+        dibuixRepo.save(dibuix);
     }
 }

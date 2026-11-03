@@ -34,12 +34,11 @@ public class LoginController {
             return "login";
         }
 
-
         String username = loginForm.getUsername();
         String password = loginForm.getPassword();
         if (loginService.checkLogin(username, password)) {
             session.setAttribute("username", username);
-            return "redirect:/dibuixarGeometria";
+            return "redirect:/crearCanvas";
         }
 
         model.addAttribute("message", "Usuari/pass incorrectes");

@@ -26,6 +26,10 @@ public class Figura {
         this.mida = mida;
     }
 
+    public Figura() {
+
+    }
+
     public Long getId() {
         return id;
     }

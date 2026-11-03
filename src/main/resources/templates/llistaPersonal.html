@@ -12,7 +12,7 @@
     <ul class="eines">
 
         <li>
-            <a href="http://localhost:8080/dibuixarGeometria">
+            <a href="http://localhost:8080/crearCanvas">
                     <span>
                         Dibuixar
                     </span>
@@ -45,6 +45,19 @@
     </ul>
 
 </nav>
+
+<ul>
+    <li th:each="dibuix : ${dibuixos}">
+        <a th:href="@{/dibuixos/{id}/editar(id=${dibuix.id})}"
+           th:text="${dibuix.nom}"></a>
+
+        <span th:text="|${#lists.size(dibuix.figures)} figures|"></span>
+
+        <span th:text="|Creat: ${#temporals.format(dibuix.dataCreacio, 'dd/MM/yyyy HH:mm')}|"></span>
+
+        <span th:text="|Modificat: ${#temporals.format(dibuix.dataModificacio, 'dd/MM/yyyy HH:mm')}|"></span>
+    </li>
+</ul>
 
 </body>
 </html>

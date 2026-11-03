@@ -1,0 +1,9 @@
+<a th:href="@{/llistaPersonal}">Tornar als meus dibuixos</a>
+
+
+<h1 th:text="${dibuix.nom}"></h1>
+
+<canvas id="canvasDibuix"
+        th:attr="width=${dibuix.amplada},height=${dibuix.alcada}"
+        style="border: 1px solid;">
+</canvas>

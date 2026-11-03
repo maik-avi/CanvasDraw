@@ -10,6 +10,10 @@ public class Punt {
         this.y = y;
     }
 
+    public Punt() {
+
+    }
+
     public double getX() {
         return x;
     }

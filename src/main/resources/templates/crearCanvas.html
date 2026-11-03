@@ -12,7 +12,7 @@
         <ul class="eines">
 
             <li>
-                <a href="http://localhost:8080/dibuixarGeometria">
+                <a href="http://localhost:8080/crearCanvas">
                     <span>
                         Dibuixar
                     </span>
@@ -45,6 +45,25 @@
         </ul>
 
     </nav>
+
+    <form th:action="@{/crearCanvas}"
+          th:object="${canvasForm}"
+          method="post">
+
+        <label for="nom">Nom del dibuix</label>
+        <input type="text" th:field="*{nom}">
+
+        <label for="amplada">Amplada</label>
+        <input type="number" min="1" th:field="*{amplada}">
+        <p th:errors="*{amplada}"></p>
+
+        <label for="alcada">Alçada</label>
+        <input type="number" min="1" th:field="*{alcada}">
+        <p th:errors="*{alcada}"></p>
+
+        <button type="submit">Crear Canvas</button>
+    </form>
+
 
 </body>
 </html>
