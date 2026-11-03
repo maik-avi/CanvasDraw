@@ -1,5 +1,8 @@
 package com.example.geomtria.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Figura {
 
     private Long id;
@@ -9,6 +12,9 @@ public class Figura {
     private double x;
     private double y;
     private double mida;
+
+    private List<Punt> punts = new ArrayList<>();
+
 
     public Figura(String nom, String tipus, String color, double x, double y, double mida) {
 
@@ -76,5 +82,12 @@ public class Figura {
         this.mida = mida;
     }
 
+    public List<Punt> getPunts() {
+        return punts;
+    }
+
+    public void setPunts(List<Punt> punts) {
+        this.punts = punts;
+    }
 
 }

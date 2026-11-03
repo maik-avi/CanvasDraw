@@ -18,10 +18,11 @@ public class Dibuix {
     public Dibuix(String nom, String usernamePropietari,int amplada, int alcada) {
         this.nom = nom;
         this.usernamePropietari = usernamePropietari;
-        this.dataCreacio = LocalDateTime.now();
-        this.dataModificacio = this.dataCreacio;
         this.amplada = amplada;
         this.alcada = alcada;
+
+        this.dataCreacio = LocalDateTime.now();
+        this.dataModificacio = this.dataCreacio;
     }
 
     public String getNom() {
@@ -73,4 +74,11 @@ public class Dibuix {
     }
 
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }
