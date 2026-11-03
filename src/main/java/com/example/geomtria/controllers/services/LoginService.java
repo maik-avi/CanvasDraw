@@ -20,4 +20,18 @@ public class LoginService {
         if ( u == null) return false;
         return (password.equals(u.getPassword()));
     }
+
+    public boolean register(String name, String username, String password) {
+
+        User existingUser = userRepo.findByUsername(username);
+
+        if (existingUser != null) {
+            return false;
+        }
+
+        User newUser = new User(name, username, password);
+
+        userRepo.save(newUser);
+        return true;
+    }
 }

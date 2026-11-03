@@ -1,0 +1,22 @@
+<form th:action="@{/register}"
+      th:object="${registerForm}"
+      method="post">
+
+    <label for="name">Nom</label>
+    <input type="text" th:field="*{name}">
+    <p th:errors="*{name}"></p>
+
+    <label for="username">Nom d'usuari</label>
+    <input type="text" th:field="*{username}">
+    <p th:errors="*{username}"></p>
+
+    <label for="password">Contrasenya</label>
+    <input type="password" th:field="*{password}">
+    <p th:errors="*{password}"></p>
+
+    <p th:if="${message != null}" th:text="${message}"></p>
+
+    <button type="submit">Registrar-me</button>
+</form>
+
+<a th:href="@{/login}">Ja tinc compte</a>
