@@ -7,3 +7,26 @@
         th:attr="width=${dibuix.amplada},height=${dibuix.alcada}"
         style="border: 1px solid;">
 </canvas>
+
+<script id="drawingData" type="application/json" th:inline="javascript">
+    /*[[${dibuix.figures}]]*/ []
+</script>
+
+<form id="guardarDibuix"
+      th:action="@{/dibuixos/{id}/guardar(id=${dibuix.id})}"
+      method="post">
+    <input type="hidden" id="drawing" name="drawing" value="[]">
+    <button type="submit">Guardar</button>
+</form>
+
+<script>
+    const figures = JSON.parse(
+        document.getElementById("drawingData").textContent
+    );
+
+    document.getElementById("guardarDibuix").addEventListener("submit", () => {
+        document.getElementById("drawing").value = JSON.stringify(figures);
+    });
+</script>
+
+<script th:src="@{/js/editor.js}" defer></script>
