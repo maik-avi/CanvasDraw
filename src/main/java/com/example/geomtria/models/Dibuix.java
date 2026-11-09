@@ -12,6 +12,7 @@ public class Dibuix {
     private LocalDateTime dataModificacio;
     private int amplada;
     private int alcada;
+    private boolean mostrar = false;
 
     private List<Figura> figures = new ArrayList<>();
 
@@ -88,5 +89,13 @@ public class Dibuix {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public boolean isMostrar() {
+        return mostrar;
+    }
+
+    public void setMostrar(boolean mostrar) {
+        this.mostrar = mostrar;
     }
 }

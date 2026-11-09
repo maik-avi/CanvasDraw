@@ -53,13 +53,11 @@
 </nav>
 
 <ul>
-
-    <a th:href="@{/dibuixos/{id}/veureDibuix(id=${fila.dibuix.id})}">
-        Veure dibuix
-    </a>
-
     <li th:each="fila : ${dibuixosPublics}">
-        <strong th:text="${fila.dibuix.nom}"></strong>
+        <a th:href="@{/dibuixos/{id}/veureDibuix(id=${fila.dibuix.id})}">
+            <strong th:text="${fila.dibuix.nom}"></strong>
+        </a>
+
         <span th:text="| — ${fila.nomUsuari}|"></span>
         <span th:text="|${#lists.size(fila.dibuix.figures)} figures|"></span>
         <span th:text="|Creat: ${#temporals.format(fila.dibuix.dataCreacio, 'dd/MM/yyyy HH:mm')}|"></span>

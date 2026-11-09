@@ -1,13 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{/style/style.css}">
+</head>
+<body>
+
 <a th:href="@{/llistaPersonal}">Tornar als meus dibuixos</a>
+<a th:href="@{/llistaPublica}">Veure tots els dibuixos</a>
+<a th:href="@{/crearCanvas}">Crear un nou dibuix</a>
 
 
 <h1 th:text="${dibuix.nom}"></h1>
 
 <section class="container">
-<canvas id="canvasDibuix"
-        th:attr="width=${dibuix.amplada},height=${dibuix.alcada}"
-        style="border: 1px solid;">
-</canvas>
+
+    <div class="canvasIselector">
+        <canvas id="canvasDibuix" th:attr="width=${dibuix.amplada},height=${dibuix.alcada}" style="border: 1px solid;"></canvas>
+
+        <div class="scrollableAreaContainer">
+            <div class="scrollableItemsContainer">
+                <ul id="llistaFigures" class="scrollableItems"></ul>
+                <li>Cosa 1</li>
+                <li>Cosas 2</li>
+            </div>
+        </div>
+    </div>
+
 
 <div class="tool-bar">
     <h1>Draw</h1>
@@ -35,13 +56,9 @@
     <label for="mida">Tria una mida: </label>
 
     <input type="number" id="mida" name="mida" min="1" max="100" value="25">
-
-
-       
 </div>
 
 </section>
-
 
 
 <script id="drawingData" type="application/json" th:inline="javascript">
@@ -53,6 +70,20 @@
       method="post">
     <input type="hidden" id="drawing" name="drawing" value="[]">
     <button type="submit">Guardar</button>
+
+    <label for="mostrar">Mostrar a la llista publica?</label>
+
+    <select id="mostrar" name="mostrar">
+        <option value="false" th:selected="${!dibuix.mostrar}">No</option>
+        <option value="true" th:selected="${dibuix.mostrar}">Si</option>
+    </select>
 </form>
 
+
+
+    
+</body>
+
 <script th:src="@{/js/editor.js}" defer></script>
+</html>
+

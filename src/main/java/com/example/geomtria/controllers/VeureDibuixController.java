@@ -32,6 +32,10 @@ public class VeureDibuixController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
+        if (!dibuix.isMostrar()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
         if (username.equals(dibuix.getUsernamePropietari())) {
             return "redirect:/dibuixos/" + id + "/editar";
         }

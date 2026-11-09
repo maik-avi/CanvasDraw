@@ -13,7 +13,6 @@
 </section>
 
 
-
 <script id="drawingData" type="application/json" th:inline="javascript">
     /*[[${dibuix.figures}]]*/ []
 </script>
@@ -22,7 +21,6 @@
       th:action="@{/dibuixos/{id}/guardar(id=${dibuix.id})}"
       method="post">
     <input type="hidden" id="drawing" name="drawing" value="[]">
-    <button type="submit">Guardar</button>
 </form>
 
 <script th:src="@{/js/editor.js}" defer></script>

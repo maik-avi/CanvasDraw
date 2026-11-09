@@ -41,4 +41,9 @@ public class DibuixRepoImpl implements DibuixRepo{
     public List<Dibuix> findAll() {
         return new ArrayList<>(dibuixos.values());
     }
+
+    @Override
+    public void deleteById(Long id) {
+        dibuixos.remove(id);
+    }
 }

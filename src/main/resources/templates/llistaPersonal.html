@@ -48,6 +48,10 @@
 
 <ul>
     <li th:each="dibuix : ${dibuixos}">
+        <form th:action="@{/dibuixos/{id}/eliminar(id=${dibuix.id})}"
+              method="post">
+            <button type="submit">Eliminar</button>
+        </form>
         <a th:href="@{/dibuixos/{id}/editar(id=${dibuix.id})}"
            th:text="${dibuix.nom}"></a>
 

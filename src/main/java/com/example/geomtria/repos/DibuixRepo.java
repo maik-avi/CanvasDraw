@@ -15,4 +15,6 @@ public interface DibuixRepo {
     List<Dibuix> findByUsernamePropietari(String username);
 
     List<Dibuix> findAll();
+
+    void deleteById(Long id);
 }

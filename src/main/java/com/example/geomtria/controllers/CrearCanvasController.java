@@ -8,10 +8,12 @@ import com.example.geomtria.models.Figura;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.json.JsonMapper;
 
@@ -72,12 +74,20 @@ public class CrearCanvasController {
 
         Dibuix dibuix = dibuixService.cercarPerId(id);
 
+        if (dibuix == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        if (!username.equals(dibuix.getUsernamePropietari())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
         model.addAttribute("dibuix", dibuix);
         return "editarDibuix";
     }
 
     @PostMapping("/dibuixos/{id}/guardar")
-    public String guardarDibuix(@PathVariable("id") Long id, @RequestParam("drawing") String drawing, HttpSession session) {
+    public String guardarDibuix(@PathVariable("id") Long id, @RequestParam("drawing") String drawing, HttpSession session, @RequestParam(name = "mostrar", defaultValue = "false") boolean mostrar) {
 
         String username = (String) session.getAttribute("username");
         if (username == null) {
@@ -86,10 +96,18 @@ public class CrearCanvasController {
 
         Dibuix dibuix = dibuixService.cercarPerId(id);
 
+        if (dibuix == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        if (!username.equals(dibuix.getUsernamePropietari())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
         List<Figura> figures = jsonMapper.readValue(drawing, new TypeReference<List<Figura>>() {
         });
 
-        dibuixService.desarFigures(dibuix, figures);
+        dibuixService.desarFigures(dibuix, figures, mostrar);
 
         System.out.println("Dibuix: " + dibuix.getNom());
 
