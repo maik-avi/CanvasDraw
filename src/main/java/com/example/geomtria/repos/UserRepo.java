@@ -1,4 +1,4 @@
-package com.example.geomtria.controllers.repos;
+package com.example.geomtria.repos;
 
 import com.example.geomtria.models.User;
 import org.springframework.stereotype.Repository;

@@ -1,0 +1,28 @@
+<a th:href="@{/llistaPersonal}">Tornar als meus dibuixos</a>
+
+<h1 th:text="${nomUsuari}"></h1>
+<h1 th:text="${dibuix.nom}"></h1>
+
+
+<section class="container">
+    <canvas id="canvasDibuix"
+            th:attr="width=${dibuix.amplada},height=${dibuix.alcada}"
+            style="border: 1px solid;">
+    </canvas>
+
+</section>
+
+
+
+<script id="drawingData" type="application/json" th:inline="javascript">
+    /*[[${dibuix.figures}]]*/ []
+</script>
+
+<form id="guardarDibuix"
+      th:action="@{/dibuixos/{id}/guardar(id=${dibuix.id})}"
+      method="post">
+    <input type="hidden" id="drawing" name="drawing" value="[]">
+    <button type="submit">Guardar</button>
+</form>
+
+<script th:src="@{/js/editor.js}" defer></script>

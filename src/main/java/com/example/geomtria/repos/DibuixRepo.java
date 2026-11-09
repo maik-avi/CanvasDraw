@@ -1,4 +1,4 @@
-package com.example.geomtria.controllers.repos;
+package com.example.geomtria.repos;
 
 
 import com.example.geomtria.models.Dibuix;
@@ -13,4 +13,6 @@ public interface DibuixRepo {
     Dibuix findById(Long id);
 
     List<Dibuix> findByUsernamePropietari(String username);
+
+    List<Dibuix> findAll();
 }

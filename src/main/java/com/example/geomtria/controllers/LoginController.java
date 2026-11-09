@@ -1,8 +1,8 @@
 package com.example.geomtria.controllers;
 
-import com.example.geomtria.controllers.others.LoginForm;
-import com.example.geomtria.controllers.others.RegisterForm;
-import com.example.geomtria.controllers.services.LoginService;
+import com.example.geomtria.others.LoginForm;
+import com.example.geomtria.others.RegisterForm;
+import com.example.geomtria.services.LoginService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

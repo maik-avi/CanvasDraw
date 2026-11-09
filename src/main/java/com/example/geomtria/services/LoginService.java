@@ -1,7 +1,7 @@
-package com.example.geomtria.controllers.services;
+package com.example.geomtria.services;
 
 
-import com.example.geomtria.controllers.repos.UserRepo;
+import com.example.geomtria.repos.UserRepo;
 import com.example.geomtria.models.User;
 import org.springframework.stereotype.Service;
 

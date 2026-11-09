@@ -3,10 +3,46 @@
 
 <h1 th:text="${dibuix.nom}"></h1>
 
+<section class="container">
 <canvas id="canvasDibuix"
         th:attr="width=${dibuix.amplada},height=${dibuix.alcada}"
         style="border: 1px solid;">
 </canvas>
+
+<div class="tool-bar">
+    <h1>Draw</h1>
+    <label for="color-set">Color-Set</label>
+    <input id="color-set" name="color-set" type="color">
+
+    <label for="modo-de-dibujo">Elige que dibujar:</label>
+    <select id="modo-de-dibujo" name="modo-de-dibujo">
+        <option value="">-- Selecciona tu modo de dibujo --</option>
+        <option value="seleccionar">Seleccionar figura</option>
+        <option value="alzada">A mano alzada</option>
+        <option value="cercle">Circulo</option>
+        <option value="cuadrado">Cuadrado</option>
+        <option value="triangulo">Triangulo</option>
+        <option value="estrella7">Estrella de 7 puntas</option>    
+    </select>
+
+    <label for="rellenado">Quieres que tu figura sea rellenada de color tu figura?</label>
+    <select name="rellenado" id="rellenado">
+                <option value="no-rellenado">-- Selecciona si o no --</option>
+                <option value="si-rellenado">Si</option>
+                <option value="no-rellenado">No</option>
+    </select>
+
+    <label for="mida">Tria una mida: </label>
+
+    <input type="number" id="mida" name="mida" min="1" max="100" value="25">
+
+
+       
+</div>
+
+</section>
+
+
 
 <script id="drawingData" type="application/json" th:inline="javascript">
     /*[[${dibuix.figures}]]*/ []
@@ -18,15 +54,5 @@
     <input type="hidden" id="drawing" name="drawing" value="[]">
     <button type="submit">Guardar</button>
 </form>
-
-<script>
-    const figures = JSON.parse(
-        document.getElementById("drawingData").textContent
-    );
-
-    document.getElementById("guardarDibuix").addEventListener("submit", () => {
-        document.getElementById("drawing").value = JSON.stringify(figures);
-    });
-</script>
 
 <script th:src="@{/js/editor.js}" defer></script>

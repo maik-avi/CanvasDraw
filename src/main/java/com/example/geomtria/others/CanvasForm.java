@@ -1,4 +1,4 @@
-package com.example.geomtria.controllers.others;
+package com.example.geomtria.others;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;

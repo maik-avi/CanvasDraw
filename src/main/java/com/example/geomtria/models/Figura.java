@@ -9,6 +9,7 @@ public class Figura {
     private String nom;
     private String tipus;
     private String color;
+    private boolean omplert;
     private double x;
     private double y;
     private double mida;
@@ -16,11 +17,12 @@ public class Figura {
     private List<Punt> punts = new ArrayList<>();
 
 
-    public Figura(String nom, String tipus, String color, double x, double y, double mida) {
+    public Figura(String nom, String tipus, String color, boolean omplert, double x, double y, double mida) {
 
         this.nom = nom;
         this.tipus = tipus;
         this.color = color;
+        this.omplert = omplert;
         this.x = x;
         this.y = y;
         this.mida = mida;
@@ -28,6 +30,14 @@ public class Figura {
 
     public Figura() {
 
+    }
+
+    public boolean getOmplert() {
+        return omplert;
+    }
+
+    public void setOmplert(boolean omplert) {
+        this.omplert = omplert;
     }
 
     public Long getId() {

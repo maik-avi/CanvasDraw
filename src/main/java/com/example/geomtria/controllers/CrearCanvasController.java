@@ -1,12 +1,13 @@
 package com.example.geomtria.controllers;
 
 
-import com.example.geomtria.controllers.others.CanvasForm;
-import com.example.geomtria.controllers.services.DibuixService;
+import com.example.geomtria.others.CanvasForm;
+import com.example.geomtria.services.DibuixService;
 import com.example.geomtria.models.Dibuix;
 import com.example.geomtria.models.Figura;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,19 +15,17 @@ import org.springframework.web.bind.annotation.*;
 import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.json.JsonMapper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class CrearCanvasController {
 
-    private final DibuixService dibuixService;
-    private final JsonMapper jsonMapper;
+    @Autowired
+    DibuixService dibuixService;
 
-    public CrearCanvasController(DibuixService dibuixService, JsonMapper jsonMapper) {
-        this.dibuixService = dibuixService;
-        this.jsonMapper = jsonMapper;
-    }
+    @Autowired
+    JsonMapper jsonMapper;
+
 
     @GetMapping("/crearCanvas")
     public String crearCanvas(HttpSession session, Model model) {
@@ -91,6 +90,19 @@ public class CrearCanvasController {
         });
 
         dibuixService.desarFigures(dibuix, figures);
+
+        System.out.println("Dibuix: " + dibuix.getNom());
+
+        for (Figura figura : figures) {
+            System.out.println("  ID: " + figura.getId());
+            System.out.println("  Nom: " + figura.getNom());
+            System.out.println("  Tipus: " + figura.getTipus());
+            System.out.println("  Color: " + figura.getColor());
+            System.out.println("  Mida: " + figura.getMida());
+            System.out.println("  Posició: (" + figura.getX() + ", " + figura.getY() + ")");
+            System.out.println("  Omplert: " + figura.getOmplert());
+            System.out.println();
+        }
         return "redirect:/dibuixos/" + id + "/editar";
 
     }

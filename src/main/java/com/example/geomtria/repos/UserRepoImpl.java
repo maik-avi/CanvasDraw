@@ -1,4 +1,4 @@
-package com.example.geomtria.controllers.repos;
+package com.example.geomtria.repos;
 
 
 import com.example.geomtria.models.User;
@@ -13,6 +13,7 @@ public class UserRepoImpl implements UserRepo{
     public UserRepoImpl() {
         save(new User("Bill", "bill", "12345"));
         save(new User("Tom", "tom", "abcde"));
+        save(new User("miguel", "miguel", "olakease"));
     }
 
     private final Map<String, User> users = new HashMap<>();

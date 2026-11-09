@@ -1,4 +1,4 @@
-package com.example.geomtria.controllers.repos;
+package com.example.geomtria.repos;
 
 import com.example.geomtria.models.Dibuix;
 import org.springframework.stereotype.Repository;
@@ -8,7 +8,9 @@ import java.util.*;
 
 @Repository
 public class DibuixRepoImpl implements DibuixRepo{
+
     private Map<Long, Dibuix> dibuixos = new HashMap<>();
+
     Long sigueinteId = 1L;
 
     @Override
@@ -33,5 +35,10 @@ public class DibuixRepoImpl implements DibuixRepo{
                 .filter(dibuix ->
                         username.equals(dibuix.getUsernamePropietari()))
                 .toList();
+    }
+
+    @Override
+    public List<Dibuix> findAll() {
+        return new ArrayList<>(dibuixos.values());
     }
 }
