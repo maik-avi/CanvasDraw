@@ -79,7 +79,7 @@ public class CrearCanvasController {
         }
 
         if (!username.equals(dibuix.getUsernamePropietari())) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+            return "redirect:/dibuixos/" + dibuix.getId() + "/veureDibuix";
         }
 
         model.addAttribute("dibuix", dibuix);

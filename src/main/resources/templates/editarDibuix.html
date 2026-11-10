@@ -4,7 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" th:href="@{/style/style.css}">
+    <style>
+        .canvasIselector {
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+            gap: 16px;
+        }
+
+        #canvasDibuix {
+            display: block;
+            flex-shrink: 0;
+        }
+
+        .scrollableAreaContainer {
+            position: relative;
+            width: 240px;
+            flex-shrink: 0;
+            border: 1px solid #aaa;
+        }
+
+        .scrollableItemsContainer {
+            position: absolute;
+            inset: 0;
+            overflow-y: auto;
+        }
+
+        .scrollableItems {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin: 0;
+            padding: 12px;
+            list-style: none;
+        }
+
+        .scrollableItems li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+    </style>
 </head>
 <body>
 
@@ -18,13 +59,14 @@
 <section class="container">
 
     <div class="canvasIselector">
-        <canvas id="canvasDibuix" th:attr="width=${dibuix.amplada},height=${dibuix.alcada}" style="border: 1px solid;"></canvas>
+        <canvas id="canvasDibuix"
+                th:attr="width=${dibuix.amplada},height=${dibuix.alcada}"
+                style="border: 1px solid;">
+        </canvas>
 
         <div class="scrollableAreaContainer">
             <div class="scrollableItemsContainer">
                 <ul id="llistaFigures" class="scrollableItems"></ul>
-                <li>Cosa 1</li>
-                <li>Cosas 2</li>
             </div>
         </div>
     </div>

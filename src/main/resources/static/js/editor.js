@@ -5,6 +5,11 @@ const toolbar = document.getElementById("tool-bar");
 const selectorModo = document.getElementById("modo-de-dibujo");
 const selectorRellenado = document.getElementById("rellenado");
 
+const llistaFigures = document.getElementById("llistaFigures");
+
+let trazoActual = null;
+let punteroActivo = null;
+
 const figures = JSON.parse(
     document.getElementById("drawingData").textContent
 );
@@ -34,6 +39,8 @@ function pintarDibuix() {
             dibujoEstrella7(ctx, figura);
         }
     }
+
+    actualizarLista();
 }
 
 canvas.addEventListener("click", (event) => {
@@ -47,9 +54,9 @@ canvas.addEventListener("click", (event) => {
     estrella7: "Estrella de 7 puntas"
 };
 
-    if (tipus !== "cercle" && tipus !== "cuadrado") {
-        return;
-    }
+    if (!["cercle", "cuadrado", "triangulo", "estrella7"].includes(tipus)) {
+    return;
+}
 
     const midaSeleccionada = Number(selectorMida.value);
 
@@ -114,5 +121,109 @@ function dibujarCuadrado(ctx, figura) {
         ctx.stroke();
     }
 }        
+
+function dibujarTriangulo(ctx, figura) {
+    ctx.beginPath();
+    
+    for (let i = 0; i < 3; i++) {
+        const angulo = -Math.PI / 2 + i * 2 * Math.PI / 3;
+        const x = figura.x + Math.cos(angulo) * figura.mida;
+        const y = figura.y + Math.sin(angulo) * figura.mida;
+
+        if (i === 0) {
+            ctx.moveTo(x, y);
+        } else {
+            ctx.lineTo(x, y);
+        }
+    }
+
+    ctx.closePath();
+
+    if (figura.omplert ?? true) {
+        ctx.fillStyle = figura.color;
+        ctx.fill();
+    } else {
+        ctx.strokeStyle = figura.color;
+        ctx.stroke();
+    }
+
+}
+
+function dibujarManoAlzada(ctx, figura) {
+
+    if (figura.punts.length === 0) {
+        return;
+    }
+
+    ctx.save();
+    ctx.strokeStyle = figura.color;
+    ctx.fillStyle = figura.color;
+    ctx.lineWidth = 2;
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctxx.beginPath();
+
+    const primero = figura.punts[0];
+
+    if (figura.punts.length === 1) {
+        ctx.arc(figura.x + primero.x,
+            figura.y + primero.y,
+            1,
+            0,
+            Math.PI * 2
+        );
+        ctx.fill();
+    } else {
+        ctx.moveTo(figura.x + primero.x, figura.y + primero.y);
+
+        for (let i = 1; i < figura.punts.length; i++) {
+            const punto = figura.punts[i];
+            ctx.lineTo(figura.x + punto.x, figura.y + punto.y);
+        }
+
+
+        ctx.stroke();
+    } 
+
+    ctx.restore();
+}
+
+function posicionEnCanvas(event) {
+    const rect = canvas.getBoundingClientRect();
+
+    return {
+        x: (event.clientX - rect.left) * canvas.width / rect.width,
+        y: (event.clientY - rect.top) * canvas.height / rect.height
+    };
+}
+
+function actualizarLista() {
+    llistaFigures.replaceChildren();
+
+    for (const figura of figures) {
+        const item = document.createElement("li");
+
+        const nombre = document.createElement("span");
+        nombre.textContent = figura.nom;
+
+        const botonEliminar = document.createElement("button");
+        botonEliminar.type = "button";
+        botonEliminar.textContent = "Eliminar";
+
+        botonEliminar.addEventListener("click", () => {
+            const indice = figures.findIndex(
+                actual => actual.id === figura.id
+            );
+
+            if (indice !== -1) {
+                figures.splice(indice, 1);
+                pintarDibuix();
+            }
+        });
+
+        item.append(nombre, botonEliminar);
+        llistaFigures.append(item);
+    }
+}
 
 pintarDibuix();
