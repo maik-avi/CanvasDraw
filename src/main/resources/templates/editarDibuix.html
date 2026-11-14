@@ -19,7 +19,7 @@
 
         .scrollableAreaContainer {
             position: relative;
-            width: 240px;
+            width: 400px;
             flex-shrink: 0;
             border: 1px solid #aaa;
         }
@@ -45,6 +45,11 @@
             align-items: center;
             gap: 8px;
         }
+        .containerEditarFigura {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
     </style>
 </head>
 <body>
@@ -68,6 +73,37 @@
             <div class="scrollableItemsContainer">
                 <ul id="llistaFigures" class="scrollableItems"></ul>
             </div>
+        </div>
+
+        <div class="containerEditarFigura">
+            <h2>Figura: <span id="nombre-figura">Ninguna seleccionada</span></h2>
+
+            <label for="modificar-color">Color</label>
+            <input id="modificar-color" type="color"
+                value="#000000" disabled>
+
+            <label for="modificar-mida">Tamaño</label>
+            <input id="modificar-mida" type="number"
+            min="10" max="100" value="25" disabled>
+
+            <label for="posicion-editable-X">Posición X</label>
+            <input id="posicion-editable-X" type="number"
+            min="0" step="any"
+            th:attr="max=${dibuix.amplada}"
+            disabled>
+
+            <label for="posicion-editable-Y">Posición Y</label>
+            <input id="posicion-editable-Y" type="number"
+            min="0" step="any"
+            th:attr="max=${dibuix.alcada}"
+            disabled>
+
+            <label for="rellenadoEditable">Quieres que tu figura sea rellenada de color tu figura?</label>
+            <label for="modificar-relleno">Relleno</label>
+            <select id="modificar-relleno" disabled>
+                <option value="true">Rellenada</option>
+                <option value="false">Solo contorno</option>
+            </select>
         </div>
     </div>
 
