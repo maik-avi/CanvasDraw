@@ -54,8 +54,7 @@ public class CrearCanvasController {
             return "crearCanvas";
         }
 
-        Dibuix dibuix = dibuixService.crearDibuix(
-                form.getNom(), username, form.getAmplada(), form.getAlcada()
+        Dibuix dibuix = dibuixService.crearDibuix(form.getNom(), username, form.getAmplada(), form.getAlcada()
         );
 
         return "redirect:/dibuixos/" + dibuix.getId() + "/editar";

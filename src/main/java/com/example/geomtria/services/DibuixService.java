@@ -60,6 +60,8 @@ public class DibuixService {
                 continue;
             }
 
+
+
             String username = dibuix.getUsernamePropietari();
             User usuari = userRepo.findByUsername(username);
 
@@ -74,9 +76,7 @@ public class DibuixService {
         return dibuixRepo.findById(id);
     }
 
-    public void desarFigures(
-            Dibuix dibuix, List<Figura> figures, boolean mostrar) {
-
+    public void desarFigures(Dibuix dibuix, List<Figura> figures, boolean mostrar) {
         dibuix.setFigures(figures);
         dibuix.setMostrar(mostrar);
         dibuix.setDataModificacio(LocalDateTime.now());

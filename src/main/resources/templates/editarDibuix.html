@@ -75,6 +75,11 @@
             </div>
         </div>
 
+        <button type="button" id="eliminarTodas">Eliminar todas las figuras</button>
+        
+        <button type="button" id="deshacer" disabled>Deshacer</button>
+        <button type="button" id="rehacer" disabled>Rehacer</button>
+
         <div class="containerEditarFigura">
             <h2>Figura: <span id="nombre-figura">Ninguna seleccionada</span></h2>
 
@@ -104,6 +109,11 @@
                 <option value="true">Rellenada</option>
                 <option value="false">Solo contorno</option>
             </select>
+        </div>
+
+        <div class="containerHistorial">
+            <h2>Historial de cambios</h2>
+                <ul id="historialCambios"></ul>
         </div>
     </div>
 
