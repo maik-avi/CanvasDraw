@@ -60,8 +60,6 @@ public class DibuixService {
                 continue;
             }
 
-
-
             String username = dibuix.getUsernamePropietari();
             User usuari = userRepo.findByUsername(username);
 

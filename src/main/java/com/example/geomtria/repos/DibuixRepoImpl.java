@@ -33,8 +33,7 @@ public class DibuixRepoImpl implements DibuixRepo{
     public List<Dibuix> findByUsernamePropietari(String username) {
         return dibuixos.values().stream()
                 .filter(dibuix ->
-                        username.equals(dibuix.getUsernamePropietari()))
-                .toList();
+                        username.equals(dibuix.getUsernamePropietari())).toList();
     }
 
     @Override
