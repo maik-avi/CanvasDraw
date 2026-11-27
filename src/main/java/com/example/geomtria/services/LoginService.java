@@ -17,7 +17,8 @@ public class LoginService {
     public boolean checkLogin(String username, String password) {
         User u = userRepo.findByUsername(username);
 
-        if ( u == null) return false;
+        if (u == null) return false;
+
         return (password.equals(u.getPassword()));
     }
 

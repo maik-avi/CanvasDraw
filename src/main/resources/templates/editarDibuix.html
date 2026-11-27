@@ -1,183 +1,170 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        .canvasIselector {
-            display: flex;
-            flex-direction: row;
-            align-items: stretch;
-            gap: 16px;
-        }
-
-        #canvasDibuix {
-            display: block;
-            flex-shrink: 0;
-        }
-
-        .scrollableAreaContainer {
-            position: relative;
-            width: 400px;
-            flex-shrink: 0;
-            border: 1px solid #aaa;
-        }
-
-        .scrollableItemsContainer {
-            position: absolute;
-            inset: 0;
-            overflow-y: auto;
-        }
-
-        .scrollableItems {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin: 0;
-            padding: 12px;
-            list-style: none;
-        }
-
-        .scrollableItems li {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 8px;
-        }
-        .containerEditarFigura {
-            display: flex;
-            flex-direction: column;
-            gap: 9px;
-        }
-    </style>
-</head>
-<body>
-
-<a th:href="@{/llistaPersonal}">Tornar als meus dibuixos</a>
-<a th:href="@{/llistaPublica}">Veure tots els dibuixos</a>
-<a th:href="@{/crearCanvas}">Crear un nou dibuix</a>
-
-
-<h1 th:text="${dibuix.nom}"></h1>
-
-<section class="container">
-
-    <div class="canvasIselector">
-        <canvas id="canvasDibuix"
-                th:attr="width=${dibuix.amplada},height=${dibuix.alcada}"
-                style="border: 1px solid;">
-        </canvas>
-
-        <div class="scrollableAreaContainer">
-            <div class="scrollableItemsContainer">
-                <ul id="llistaFigures" class="scrollableItems"></ul>
-            </div>
-        </div>
-
-        <button type="button" id="eliminarTodas">Eliminar todas las figuras</button>
-        
-        <button type="button" id="deshacer" disabled>Deshacer</button>
-        <button type="button" id="rehacer" disabled>Rehacer</button>
-
-        <div class="containerEditarFigura">
-            <h2>Figura: <span id="nombre-figura">Ninguna seleccionada</span></h2>
-
-            <label for="modificar-color">Color</label>
-            <input id="modificar-color" type="color"
-                value="#000000" disabled>
-
-            <label for="modificar-mida">Tamaño</label>
-            <input id="modificar-mida" type="number"
-            min="10" max="100" value="25" disabled>
-
-            <label for="posicion-editable-X">Posición X</label>
-            <input id="posicion-editable-X" type="number"
-            min="0" step="any"
-            th:attr="max=${dibuix.amplada}"
-            disabled>
-
-            <label for="posicion-editable-Y">Posición Y</label>
-            <input id="posicion-editable-Y" type="number"
-            min="0" step="any"
-            th:attr="max=${dibuix.alcada}"
-            disabled>
-
-            <label for="rellenadoEditable">Quieres que tu figura sea rellenada de color tu figura?</label>
-            <label for="modificar-relleno">Relleno</label>
-            <select id="modificar-relleno" disabled>
-                <option value="true">Rellenada</option>
-                <option value="false">Solo contorno</option>
-            </select>
-        </div>
-
-
-        <div class="scrollableAreaContainer">
-            <div class="scrollableItemsContainer">
-                <div class="containerHistorial">
-                    <h2>Historial de cambios</h2>
-                        <ul id="historialCambios" class="scrollableItems"></ul>
+<html lang="ca" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#f5f4ef">
+        <title>Editor de dibuix · Geometria</title>
+        <link rel="stylesheet" th:href="@{/js/style.css}">
+    </head>
+    <body class="editor-page">
+        <header class="site-header">
+            <nav class="nav-shell" aria-label="Navegació principal">
+                <a class="brand" th:href="@{/llistaPersonal}" aria-label="Geometria, els meus dibuixos">
+                    <span>Geometria<span class="brand-dot">.</span></span>
+                </a>
+                <div class="nav-links">
+                    <a th:href="@{/llistaPersonal}" class="nav-link ">Els meus dibuixos</a>
+                    <a th:href="@{/llistaPublica}" class="nav-link ">Galeria pública</a>
+                    <a th:href="@{/crearCanvas}" class="nav-link ">Nou dibuix</a>
                 </div>
+                <form class="logout-form" th:action="@{/logout}" method="post">
+                    <button class="button button-quiet" type="submit">Tancar sessió <span aria-hidden="true">↗</span></button>
+                </form>
+            </nav>
+        </header>
+        <main class="editor-shell">
+            <div class="page-heading editor-heading">
+                <div>
+                    <a class="back-link" th:href="@{/llistaPersonal}">← Els meus dibuixos</a>
+                    <h1 th:text="${dibuix.nom}"></h1>
+                    <label for="cambiarNombre">Cambiar el nombre: <input type="text"></label>
+                </div>
+                <span class="dimension-tag" th:text="|${dibuix.amplada} × ${dibuix.alcada} px|"></span>
             </div>
-        </div>
-        
-    </div>
-
-
-<div class="tool-bar">
-    <h1>Draw</h1>
-    <label for="color-set">Color-Set</label>
-    <input id="color-set" name="color-set" type="color">
-
-    <label for="modo-de-dibujo">Elige que dibujar:</label>
-    <select id="modo-de-dibujo" name="modo-de-dibujo">
-        <option value="">-- Selecciona tu modo de dibujo --</option>
-        <option value="seleccionar">Seleccionar figura</option>
-        <option value="alzada">A mano alzada</option>
-        <option value="cercle">Circulo</option>
-        <option value="cuadrado">Cuadrado</option>
-        <option value="triangulo">Triangulo</option>
-        <option value="estrella7">Estrella de 7 puntas</option>    
-    </select>
-
-    <label for="rellenado">Quieres que tu figura sea rellenada de color tu figura?</label>
-    <select name="rellenado" id="rellenado">
-                <option value="no-rellenado">-- Selecciona si o no --</option>
-                <option value="si-rellenado">Si</option>
-                <option value="no-rellenado">No</option>
-    </select>
-
-    <label for="mida">Tria una mida: </label>
-
-    <input type="number" id="mida" name="mida" min="1" max="100" value="25">
-</div>
-
-</section>
-
-
-<script id="drawingData" type="application/json" th:inline="javascript">
-    /*[[${dibuix.figures}]]*/ []
-</script>
-
-<form id="guardarDibuix"
-      th:action="@{/dibuixos/{id}/guardar(id=${dibuix.id})}"
-      method="post">
-    <input type="hidden" id="drawing" name="drawing" value="[]">
-    <button type="submit">Guardar</button>
-
-    <label for="mostrar">Mostrar a la llista publica?</label>
-
-    <select id="mostrar" name="mostrar">
-        <option value="false" th:selected="${!dibuix.mostrar}">No</option>
-        <option value="true" th:selected="${dibuix.mostrar}">Si</option>
-    </select>
-</form>
-
-
-
-    
-</body>
-
-<script th:src="@{/js/editor.js}" defer></script>
+            <div class="editor-layout">
+                <section class="workspace-column" aria-label="Espai de dibuix">
+                    <div class="panel canvas-panel">
+                        <div class="tool-bar" id="tool-bar">
+                            <div class="field tool-mode">
+                                <label for="modo-de-dibujo">Eina</label>
+                                <select id="modo-de-dibujo" name="modo-de-dibujo">
+                                    <option value="">Tria una eina</option>
+                                    <option value="seleccionar">Seleccionar figura</option>
+                                    <option value="alzada">A mà alçada</option>
+                                    <option value="cercle">Cercle</option>
+                                    <option value="cuadrado">Quadrat</option>
+                                    <option value="triangulo">Triangle</option>
+                                    <option value="estrella7">Estrella de 7 puntes</option>
+                                </select>
+                            </div>
+                            <div class="field tool-color">
+                                <label for="color-set">Color</label>
+                                <input id="color-set" name="color-set" type="color">
+                            </div>
+                            <div class="field tool-size">
+                                <label for="mida">Mida</label>
+                                <input type="number" id="mida" name="mida" min="1" max="100" value="25">
+                            </div>
+                            <div class="field tool-fill">
+                                <label for="rellenado">Acabat</label>
+                                <select name="rellenado" id="rellenado">
+                                    <option value="no-rellenado">Tria un acabat</option>
+                                    <option value="si-rellenado">Amb farciment</option>
+                                    <option value="no-rellenado">Només contorn</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="canvas-topline">
+                            <span class="eyebrow">EL TEU LLENÇ</span>
+                            <div class="history-controls">
+                                <button type="button" id="deshacer" class="button button-secondary button-small" disabled>
+                                    <span aria-hidden="true">↶</span> Desfer
+                                </button>
+                                <button type="button" id="rehacer" class="button button-secondary button-small" disabled>
+                                    Refer <span aria-hidden="true">↷</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="canvas-viewport">
+                            <canvas id="canvasDibuix" th:attr="width=${dibuix.amplada},height=${dibuix.alcada},data-id=${dibuix.id},data-propietari=${dibuix.usernamePropietari},data-creacio=${dibuix.dataCreacio}" aria-label="Llenç de dibuix">
+                                
+                            </canvas>
+                        </div>
+                        <div class="canvas-caption">
+                            <span>Selecciona una figura per editar-la o arrossegar-la.</span>
+                            <span class="small-tag">DRAWINGS</span>
+                        </div>
+                    </div>
+                    <section class="panel history-panel">
+                        <div class="panel-heading">
+                            <h2>Historial de canvis</h2>
+                            <span class="small-tag">PAS A PAS</span>
+                        </div>
+                        <ul id="historialCambios" class="scrollableItems history-list"></ul>
+                    </section>
+                    <section class="panel save-panel">
+                        <div>
+                            <h2>Comparteix el resultat</h2>
+                            <p class="muted">Els canvis es conserven en aquest navegador. Envia el dibuix al servidor per actualitzar la versió compartida.</p>
+                        </div>
+                        <form id="guardarDibuix" th:action="@{/dibuixos/{id}/guardar(id=${dibuix.id})}" method="post">
+                            <input type="hidden" id="drawing" name="drawing" value="[]">
+                            <div class="field">
+                                <label for="mostrar">Visible a la galeria pública</label>
+                                <select id="mostrar" name="mostrar">
+                                    <option value="false" th:selected="${!dibuix.mostrar}">No, només per a mi</option>
+                                    <option value="true" th:selected="${dibuix.mostrar}">Sí, compartir el dibuix</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="button button-primary">Guardar al servidor <span aria-hidden="true">↑</span></button>
+                        </form>
+                    </section>
+                </section>
+                <aside class="editor-sidebar">
+                    <section class="panel figures-panel">
+                        <div class="panel-heading">
+                            <h2>Figures</h2>
+                            <span class="small-tag">OBJECTES</span>
+                        </div>
+                        <p class="panel-description">Les formes que componen el teu dibuix.</p>
+                        <ul id="llistaFigures" class="scrollableItems figure-list"></ul>
+                        <div class="panel-footer">
+                            <button type="button" id="eliminarTodas" class="button button-danger button-full">Eliminar totes les figures</button>
+                        </div>
+                    </section>
+                    <section class="panel containerEditarFigura">
+                        <div class="panel-heading">
+                            <h2>Editar figura</h2>
+                        </div>
+                        <p id="nombre-figura" class="selected-name">Ninguna seleccionada</p>
+                        <div class="edit-fields">
+                            <div class="field">
+                                <label for="modificar-color">Color</label>
+                                <input id="modificar-color" type="color" value="#000000" disabled>
+                            </div>
+                            <div class="field">
+                                <label for="modificar-mida">Mida</label>
+                                <input id="modificar-mida" type="number" min="10" max="100" value="25" disabled>
+                            </div>
+                            <div class="field-row">
+                                <div class="field">
+                                    <label for="posicion-editable-X">Posició X</label>
+                                    <input id="posicion-editable-X" type="number" min="0" step="any" th:attr="max=${dibuix.amplada}" disabled>
+                                </div>
+                                <div class="field">
+                                    <label for="posicion-editable-Y">Posició Y</label>
+                                    <input id="posicion-editable-Y" type="number" min="0" step="any" th:attr="max=${dibuix.alcada}" disabled>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label for="modificar-relleno">Acabat</label>
+                                <select id="modificar-relleno" disabled>
+                                    <option value="true">Amb farciment</option>
+                                    <option value="false">Només contorn</option>
+                                </select>
+                            </div>
+                        </div>
+                    </section>
+                </aside>
+            </div>
+        </main>
+        <script id="drawingData" type="application/json" th:inline="javascript">
+            /*[[${dibuix.figures}]]*/ []
+        </script>
+        <script th:src="@{/js/almacenamiento.js}" defer>
+        </script>
+        <script th:src="@{/js/editor.js}" defer>
+        </script>
+    </body>
 </html>
-

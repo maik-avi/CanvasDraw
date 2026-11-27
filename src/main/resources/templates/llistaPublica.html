@@ -1,69 +1,71 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Llista Publica</title>
-</head>
-<body>
-
-<nav>
-
-    <ul class="eines">
-
-        <li>
-            <a href="http://localhost:8080/crearCanvas">
-                    <span>
-                        Dibuixar
-                    </span>
-            </a>
-        </li>
-
-        <li>
-            <a href="http://localhost:8080/llistaPersonal">
-                    <span>
-                        Veure els meus dibuixos
-                    </span>
-            </a>
-        </li>
-
-        <li>
-            <a href="http://localhost:8080/llistaPublica">
-                    <span>
-                        Veure tots els dibuixos
-                    </span>
-            </a>
-        </li>
-
-        <li>
-            <a href="http://localhost:8080/login">
-                    <span>
-                        Fer login
-                    </span>
-            </a>
-        </li>
-
-        <li>
-            <form th:action="@{/logout}" method="post">
-                <button type="submit">Tancar sessió</button>
-            </form>
-        </li>
-    </ul>
-
-</nav>
-
-<ul>
-    <li th:each="fila : ${dibuixosPublics}">
-        <a th:href="@{/dibuixos/{id}/veureDibuix(id=${fila.dibuix.id})}">
-            <strong th:text="${fila.dibuix.nom}"></strong>
-        </a>
-
-        <span th:text="| — ${fila.nomUsuari}|"></span>
-        <span th:text="|${#lists.size(fila.dibuix.figures)} figures|"></span>
-        <span th:text="|Creat: ${#temporals.format(fila.dibuix.dataCreacio, 'dd/MM/yyyy HH:mm')}|"></span>
-        <span th:text="|Modificat: ${#temporals.format(fila.dibuix.dataModificacio, 'dd/MM/yyyy HH:mm')}|"></span>
-    </li>
-</ul>
-
-</body>
+<!DOCTYPE html>
+<html lang="ca" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#f5f4ef">
+        <title>Galeria pública · Geometria</title>
+        <link rel="stylesheet" th:href="@{/js/style.css}">
+    </head>
+    <body class="">
+        <header class="site-header">
+            <nav class="nav-shell" aria-label="Navegació principal">
+                <a class="brand" th:href="@{/llistaPersonal}" aria-label="Geometria, els meus dibuixos">
+                    <span>Geometria<span class="brand-dot">.</span></span>
+                </a>
+                <div class="nav-links">
+                    <a th:href="@{/llistaPersonal}" class="nav-link ">Els meus dibuixos</a>
+                    <a th:href="@{/llistaPublica}" class="nav-link is-active" aria-current="page">Galeria pública</a>
+                    <a th:href="@{/crearCanvas}" class="nav-link ">Nou dibuix</a>
+                </div>
+                <form class="logout-form" th:action="@{/logout}" method="post">
+                    <button class="button button-quiet" type="submit">Tancar sessió <span aria-hidden="true">↗</span></button>
+                </form>
+            </nav>
+        </header>
+        <main class="page-shell">
+            <div class="page-heading">
+                <div>
+                    <p class="eyebrow">IDEES COMPARTIDES</p>
+                    <h1>La galeria.</h1>
+                    <p class="page-description">Descobreix els dibuixos que la comunitat ha fet públics.</p>
+                </div>
+                <a class="button button-secondary" th:href="@{/llistaPersonal}">Els meus dibuixos <span aria-hidden="true">↗</span></a>
+            </div>
+            <div class="collection-label">
+                <span>EXPLORA LA COL·LECCIÓ</span>
+                <span th:text="|${#lists.size(dibuixosPublics)} dibuixos|"></span>
+            </div>
+            <section class="empty-state panel" th:if="${#lists.isEmpty(dibuixosPublics)}">
+                <h2>Una galeria per estrenar.</h2>
+                <p>Els dibuixos compartits apareixeran aquí.</p>
+                <a class="button button-primary" th:href="@{/llistaPersonal}">Anar als meus dibuixos</a>
+            </section>
+            <ul class="drawing-grid">
+                <li class="drawing-card" th:each="fila : ${dibuixosPublics}">
+                    <div class="drawing-card-top">
+                        <span class="small-tag" th:text="|${#lists.size(fila.dibuix.figures)} figures|"></span>
+                    </div>
+                    <h2>
+                        <a th:href="@{/dibuixos/{id}/veureDibuix(id=${fila.dibuix.id})}" th:text="${fila.dibuix.nom}"></a>
+                    </h2>
+                    <p class="author-line">Per <strong th:text="${fila.nomUsuari}"></strong></p>
+                    <div class="drawing-meta">
+                        <p>
+                            <span>Creat</span>
+                            <time th:text="${#temporals.format(fila.dibuix.dataCreacio, 'dd/MM/yyyy HH:mm')}"></time>
+                        </p>
+                        <p>
+                            <span>Modificat</span>
+                            <time th:text="${#temporals.format(fila.dibuix.dataModificacio, 'dd/MM/yyyy HH:mm')}"></time>
+                        </p>
+                    </div>
+                    <div class="card-actions">
+                        <a class="text-link" th:href="@{/dibuixos/{id}/veureDibuix(id=${fila.dibuix.id})}">Veure el dibuix <span aria-hidden="true">↗</span></a>
+                        <span class="muted small-text">Públic</span>
+                    </div>
+                </li>
+            </ul>
+        </main>
+    </body>
 </html>

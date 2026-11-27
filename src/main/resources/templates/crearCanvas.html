@@ -1,69 +1,64 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Dibuixar Geomtria</title>
-</head>
-<body>
-
-    <nav>
-
-        <ul class="eines">
-
-            <li>
-                <a href="http://localhost:8080/crearCanvas">
-                    <span>
-                        Dibuixar
-                    </span>
+<!DOCTYPE html>
+<html lang="ca" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#f5f4ef">
+        <title>Nou dibuix · Geometria</title>
+        <link rel="stylesheet" th:href="@{/js/style.css}">
+    </head>
+    <body class="">
+        <header class="site-header">
+            <nav class="nav-shell" aria-label="Navegació principal">
+                <a class="brand" th:href="@{/llistaPersonal}" aria-label="Geometria, els meus dibuixos">
+                    <span>Geometria<span class="brand-dot">.</span></span>
                 </a>
-            </li>
-
-            <li>
-                <a href="http://localhost:8080/llistaPersonal">
-                    <span>
-                        Veure els meus dibuixos
-                    </span>
-                </a>
-            </li>
-
-            <li>
-                <a href="http://localhost:8080/llistaPublica">
-                    <span>
-                        Veure tots els dibuixos
-                    </span>
-                </a>
-            </li>
-
-            <li>
-                <a href="http://localhost:8080/login">
-                    <span>
-                        Fer login
-                    </span>
-                </a>
-            </li>
-        </ul>
-
-    </nav>
-
-    <form th:action="@{/crearCanvas}"
-          th:object="${canvasForm}"
-          method="post">
-
-        <label for="nom">Nom del dibuix</label>
-        <input type="text" th:field="*{nom}">
-
-        <label for="amplada">Amplada</label>
-        <input type="number" min="1" th:field="*{amplada}">
-        <p th:errors="*{amplada}"></p>
-
-        <label for="alcada">Alçada</label>
-        <input type="number" min="1" th:field="*{alcada}">
-        <p th:errors="*{alcada}"></p>
-
-        <button type="submit">Crear Canvas</button>
-    </form>
-
-
-</body>
+                <div class="nav-links">
+                    <a th:href="@{/llistaPersonal}" class="nav-link ">Els meus dibuixos</a>
+                    <a th:href="@{/llistaPublica}" class="nav-link ">Galeria pública</a>
+                    <a th:href="@{/crearCanvas}" class="nav-link is-active" aria-current="page">Nou dibuix</a>
+                </div>
+                <form class="logout-form" th:action="@{/logout}" method="post">
+                    <button class="button button-quiet" type="submit">Tancar sessió <span aria-hidden="true">↗</span></button>
+                </form>
+            </nav>
+        </header>
+        <main class="page-shell create-page">
+            <div class="page-heading">
+                <div>
+                    <p class="eyebrow">UN NOU COMENÇAMENT</p>
+                    <h1>Prepara el teu llenç.</h1>
+                    <p class="page-description">Posa-li un nom, tria les dimensions i comença a dibuixar.</p>
+                </div>
+            </div>
+            <div class="create-layout">
+                <section class="panel create-form-panel">
+                    <div class="panel-heading">
+                        <h2>El teu nou dibuix</h2>
+                        <span class="small-tag">01 / CREAR</span>
+                    </div>
+                    <form class="form-stack" th:action="@{/crearCanvas}" th:object="${canvasForm}" method="post">
+                        <div class="field">
+                            <label for="nom">Nom del dibuix</label>
+                            <input type="text" th:field="*{nom}" placeholder="Una idea per començar…">
+                            <p class="field-help">Si el deixes buit, s’assignarà un nom automàticament.</p>
+                        </div>
+                        <div class="field-row">
+                            <div class="field">
+                                <label for="amplada">Amplada <span class="label-unit">px</span></label>
+                                <input type="number" min="1" th:field="*{amplada}">
+                                <p class="field-error" th:errors="*{amplada}"></p>
+                            </div>
+                            <div class="field">
+                                <label for="alcada">Alçada <span class="label-unit">px</span></label>
+                                <input type="number" min="1" th:field="*{alcada}">
+                                <p class="field-error" th:errors="*{alcada}"></p>
+                            </div>
+                        </div>
+                        <button type="submit" class="button button-primary">Crear el llenç <span aria-hidden="true">→</span></button>
+                    </form>
+                </section>
+            </div>
+        </main>
+    </body>
 </html>

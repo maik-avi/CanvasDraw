@@ -1,67 +1,72 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Llista</title>
-</head>
-<body>
-
-<nav>
-
-    <ul class="eines">
-
-        <li>
-            <a href="http://localhost:8080/crearCanvas">
-                    <span>
-                        Dibuixar
-                    </span>
-            </a>
-        </li>
-
-        <li>
-            <a href="http://localhost:8080/llistaPersonal">
-                    <span>
-                        Veure els meus dibuixos
-                    </span>
-            </a>
-        </li>
-
-        <li>
-            <a href="http://localhost:8080/llistaPublica">
-                    <span>
-                        Veure tots els dibuixos
-                    </span>
-            </a>
-        </li>
-
-        <li>
-            <a href="http://localhost:8080/login">
-                    <span>
-                        Fer login
-                    </span>
-            </a>
-        </li>
-    </ul>
-
-</nav>
-
-<ul>
-    <li th:each="dibuix : ${dibuixos}">
-        <form th:action="@{/dibuixos/{id}/eliminar(id=${dibuix.id})}"
-              method="post">
-            <button type="submit">Eliminar</button>
-        </form>
-        <a th:href="@{/dibuixos/{id}/editar(id=${dibuix.id})}"
-           th:text="${dibuix.nom}"></a>
-
-        <span th:text="|${#lists.size(dibuix.figures)} figures|"></span>
-
-        <span th:text="|Creat: ${#temporals.format(dibuix.dataCreacio, 'dd/MM/yyyy HH:mm')}|"></span>
-
-        <span th:text="|Modificat: ${#temporals.format(dibuix.dataModificacio, 'dd/MM/yyyy HH:mm')}|"></span>
-    </li>
-</ul>
-
-</body>
+<!DOCTYPE html>
+<html lang="ca" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#f5f4ef">
+        <title>Els meus dibuixos · Geometria</title>
+        <link rel="stylesheet" th:href="@{/js/style.css}">
+    </head>
+    <body class="">
+        <header class="site-header">
+            <nav class="nav-shell" aria-label="Navegació principal">
+                <a class="brand" th:href="@{/llistaPersonal}" aria-label="Geometria, els meus dibuixos">
+                    <span>Geometria<span class="brand-dot">.</span></span>
+                </a>
+                <div class="nav-links">
+                    <a th:href="@{/llistaPersonal}" class="nav-link is-active" aria-current="page">Els meus dibuixos</a>
+                    <a th:href="@{/llistaPublica}" class="nav-link ">Galeria pública</a>
+                    <a th:href="@{/crearCanvas}" class="nav-link ">Nou dibuix</a>
+                </div>
+                <form class="logout-form" th:action="@{/logout}" method="post">
+                    <button class="button button-quiet" type="submit">Tancar sessió <span aria-hidden="true">↗</span></button>
+                </form>
+            </nav>
+        </header>
+        <main class="page-shell">
+            <div class="page-heading">
+                <div>
+                    <p class="eyebrow">EL TEU ESPAI</p>
+                    <h1>Els meus dibuixos.</h1>
+                    <p class="page-description">Idees començades, proves i petites obres. Tot el que has creat, aquí.</p>
+                </div>
+                <a class="button button-primary" th:href="@{/crearCanvas}"><span aria-hidden="true">+</span> Nou dibuix</a>
+            </div>
+            <div class="collection-label">
+                <span>LA TEVA COL·LECCIÓ</span>
+                <span th:text="|${#lists.size(dibuixos)} dibuixos|"></span>
+            </div>
+            <section class="empty-state panel" th:if="${#lists.isEmpty(dibuixos)}">
+                <h2>El teu primer dibuix t’espera.</h2>
+                <p>Prepara un llenç i deixa que les idees prenguin forma.</p>
+                <a class="button button-primary" th:href="@{/crearCanvas}">Crear un dibuix <span aria-hidden="true">→</span></a>
+            </section>
+            <ul class="drawing-grid">
+                <li class="drawing-card" th:each="dibuix : ${dibuixos}">
+                    <div class="drawing-card-top">
+                        <span class="small-tag" th:text="|${#lists.size(dibuix.figures)} figures|"></span>
+                    </div>
+                    <h2>
+                        <a th:href="@{/dibuixos/{id}/editar(id=${dibuix.id})}" th:text="${dibuix.nom}"></a>
+                    </h2>
+                    <div class="drawing-meta">
+                        <p>
+                            <span>Creat</span>
+                            <time th:text="${#temporals.format(dibuix.dataCreacio, 'dd/MM/yyyy HH:mm')}"></time>
+                        </p>
+                        <p>
+                            <span>Modificat</span>
+                            <time th:text="${#temporals.format(dibuix.dataModificacio, 'dd/MM/yyyy HH:mm')}"></time>
+                        </p>
+                    </div>
+                    <div class="card-actions">
+                        <a class="text-link" th:href="@{/dibuixos/{id}/editar(id=${dibuix.id})}">Obrir l’editor <span aria-hidden="true">↗</span></a>
+                        <form th:action="@{/dibuixos/{id}/eliminar(id=${dibuix.id})}" method="post">
+                            <button class="button button-delete" type="submit">Eliminar</button>
+                        </form>
+                    </div>
+                </li>
+            </ul>
+        </main>
+    </body>
 </html>

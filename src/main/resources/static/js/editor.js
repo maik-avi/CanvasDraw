@@ -11,9 +11,11 @@ const llistaFigures = document.getElementById("llistaFigures");
 let trazoActual = null;
 let punteroActivo = null;
 
-const figures = JSON.parse(
+const figuresServidor = JSON.parse(
     document.getElementById("drawingData").textContent
 );
+
+const figures = recuperarFigurasLocal(figuresServidor);
 
 const selectorColor = document.getElementById("color-set");
 const selectorMida = document.getElementById("mida");
@@ -425,6 +427,8 @@ function actualizarFigura(event) {
         campo.dataset.parametroModificado = parametroModificado;
     }
 
+    guardarFigurasLocal(figures);
+
     pintarDibuix();
 }
 
@@ -448,10 +452,13 @@ function registrarCambio(antes, descripcion) {
     cambiosRehacer.length = 0;
 
     registrarAccion(descripcion);
+    guardarFigurasLocal(figures);
 }
 
 function restaurarEstado(estado) {
     figures.splice(0, figures.length, ...JSON.parse(estado));
+
+    guardarFigurasLocal(figures);
 
     idFiguraSeleccionada = null;
     nombreFigura.textContent = "Ninguna seleccionada";
@@ -517,6 +524,54 @@ function rehacer() {
 document.getElementById("deshacer").addEventListener("click", deshacer);
 document.getElementById("rehacer").addEventListener("click", rehacer);
 
+function guardarHistorialEditor() {
+    guardarHistorialLocal({
+        historial: historialCambios,
+        deshacer: cambiosDeshacer,
+        rehacer: cambiosRehacer,
+        siguienteId: seguentId,
+        figuras: JSON.stringify(figures)
+    });
+}
+
+function recuperarHistorialEditor() {
+    const estado = recuperarHistorialLocal();
+
+    if (estado === null) {
+        return;
+    }
+
+    historialCambios.splice(
+        0,
+        historialCambios.length,
+        ...estado.historial
+    );
+
+    seguentId = Math.max(seguentId, estado.siguienteId);
+
+    if (estado.figuras === JSON.stringify(figures)) {
+        cambiosDeshacer.splice(
+            0,
+            cambiosDeshacer.length,
+            ...estado.deshacer.slice(-limiteCambios)
+        );
+
+        cambiosRehacer.splice(
+            0,
+            cambiosRehacer.length,
+            ...estado.rehacer.slice(-limiteCambios)
+        );
+    }
+
+    listaHistorial.replaceChildren();
+
+    for (const descripcion of historialCambios) {
+        const item = document.createElement("li");
+        item.textContent = descripcion;
+        listaHistorial.append(item);
+    }
+}
+
 function registrarAccion(descripcion) {
     historialCambios.push(descripcion);
 
@@ -524,6 +579,41 @@ function registrarAccion(descripcion) {
     item.textContent = descripcion;
 
     listaHistorial.append(item);
+
+    guardarHistorialEditor();
+}
+
+function guardarConfiguracionEditor() {
+    guardarConfiguracionLocal({
+        modo: selectorModo.value,
+        color: selectorColor.value,
+        mida: selectorMida.value,
+        relleno: selectorRellenado.value
+    });
+}
+
+function recuperarConfiguracionEditor() {
+    const configuracion = recuperarConfiguracionLocal();
+
+    if (configuracion === null) {
+        return;
+    }
+
+    selectorModo.value = configuracion.modo;
+    selectorColor.value = configuracion.color;
+    selectorMida.value = configuracion.mida;
+    selectorRellenado.value = configuracion.relleno;
+}
+
+const herramientas = [
+    selectorModo,
+    selectorColor,
+    selectorMida,
+    selectorRellenado
+];
+
+for (const herramienta of herramientas) {
+    herramienta.addEventListener("input", guardarConfiguracionEditor);
 }
 
 document.getElementById("eliminarTodas").addEventListener("click", () => {
@@ -777,4 +867,6 @@ canvas.addEventListener("click", (event) => {
     pintarDibuix();
 });
 
+recuperarConfiguracionEditor();
+recuperarHistorialEditor();
 pintarDibuix();

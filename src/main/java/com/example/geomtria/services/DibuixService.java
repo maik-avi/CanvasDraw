@@ -28,24 +28,21 @@ public class DibuixService {
     }
 
     public Dibuix crearDibuix(String nom, String username, int amplada, int alcada) {
+
         if (amplada <= 0 || alcada <= 0) {
-            throw new IllegalArgumentException("Les dimensions han de ser positives");
+            throw new IllegalArgumentException("Els parametres han de ser positius");
         }
 
-        String nomFinal = nom == null ? "" : nom.trim();
-
-        if (nomFinal.isEmpty()) {
-            UUID identificador = UUID.randomUUID();
-            String text = identificador.toString();
-            String codiCurt = text.substring(0, 8);
-
-            nomFinal = "Dibuix-" + codiCurt;
+        String nomFinal = nom;
+        if (nomFinal == null || nomFinal.isEmpty()) {
+            nomFinal = UUID.randomUUID().toString().substring(0, 8);
         }
 
         Dibuix dibuix = new Dibuix(nomFinal, username, amplada, alcada);
-        dibuixRepo.save(dibuix);
 
+        dibuixRepo.save(dibuix);
         return dibuix;
+
     }
 
     public List<Dibuix> llistaPersonals(String username) {
@@ -53,7 +50,7 @@ public class DibuixService {
     }
 
     public List<DibuixPublic> llistaPublica() {
-        List<DibuixPublic> llistaCompleta = new ArrayList<>();
+        List<DibuixPublic> llistaPublica = new ArrayList<>();
 
         for (Dibuix dibuix : dibuixRepo.findAll()) {
             if (!dibuix.isMostrar()) {
@@ -61,13 +58,13 @@ public class DibuixService {
             }
 
             String username = dibuix.getUsernamePropietari();
-            User usuari = userRepo.findByUsername(username);
+            User user = userRepo.findByUsername(username);
+            String nomUsuari = user.getName();
 
-            String nomUsuari = usuari != null ? usuari.getName() : username;
-
-            llistaCompleta.add(new DibuixPublic(dibuix, nomUsuari));
+            llistaPublica.add(new DibuixPublic(dibuix,nomUsuari));
         }
-        return llistaCompleta;
+
+        return llistaPublica;
     }
 
     public Dibuix cercarPerId(Long id) {

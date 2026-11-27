@@ -1,26 +1,58 @@
-<a th:href="@{/llistaPersonal}">Tornar als meus dibuixos</a>
-
-<h1 th:text="${nomUsuari}"></h1>
-<h1 th:text="${dibuix.nom}"></h1>
-
-
-<section class="container">
-    <canvas id="canvasDibuix"
-            th:attr="width=${dibuix.amplada},height=${dibuix.alcada}"
-            style="border: 1px solid;">
-    </canvas>
-
-</section>
-
-
-<script id="drawingData" type="application/json" th:inline="javascript">
-    /*[[${dibuix.figures}]]*/ []
-</script>
-
-<form id="guardarDibuix"
-      th:action="@{/dibuixos/{id}/guardar(id=${dibuix.id})}"
-      method="post">
-    <input type="hidden" id="drawing" name="drawing" value="[]">
-</form>
-
-<script th:src="@{/js/veureDibuix.js}" defer></script>
+<!DOCTYPE html>
+<html lang="ca" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#f5f4ef">
+        <title>Veure dibuix · Geometria</title>
+        <link rel="stylesheet" th:href="@{/js/style.css}">
+    </head>
+    <body class="">
+        <header class="site-header">
+            <nav class="nav-shell" aria-label="Navegació principal">
+                <a class="brand" th:href="@{/llistaPersonal}" aria-label="Geometria, els meus dibuixos">
+                    <span>Geometria<span class="brand-dot">.</span></span>
+                </a>
+                <div class="nav-links">
+                    <a th:href="@{/llistaPersonal}" class="nav-link ">Els meus dibuixos</a>
+                    <a th:href="@{/llistaPublica}" class="nav-link is-active" aria-current="page">Galeria pública</a>
+                    <a th:href="@{/crearCanvas}" class="nav-link ">Nou dibuix</a>
+                </div>
+                <form class="logout-form" th:action="@{/logout}" method="post">
+                    <button class="button button-quiet" type="submit">Tancar sessió <span aria-hidden="true">↗</span></button>
+                </form>
+            </nav>
+        </header>
+        <main class="page-shell viewer-shell">
+            <div class="page-heading">
+                <div>
+                    <a class="back-link" th:href="@{/llistaPublica}">← Tornar a la galeria</a>
+                    <h1 th:text="${dibuix.nom}"></h1>
+                    <p class="author-line">Un dibuix de <strong th:text="${nomUsuari}"></strong></p>
+                </div>
+                <span class="dimension-tag" th:text="|${dibuix.amplada} × ${dibuix.alcada} px|"></span>
+            </div>
+            <section class="panel viewer-panel">
+                <div class="canvas-topline">
+                    <span class="eyebrow">VISTA DEL DIBUIX</span>
+                    <span class="small-tag">GALERIA PÚBLICA</span>
+                </div>
+                <div class="canvas-viewport viewer-viewport">
+                    <canvas id="canvasDibuix" th:attr="width=${dibuix.amplada},height=${dibuix.alcada}" aria-label="Dibuix compartit"></canvas>
+                </div>
+                <div class="canvas-caption">
+                    <span>Un espai per compartir idees.</span>
+                    <a class="text-link" th:href="@{/crearCanvas}">Crea el teu dibuix <span aria-hidden="true">↗</span></a>
+                </div>
+            </section>
+            <form id="guardarDibuix" th:action="@{/dibuixos/{id}/guardar(id=${dibuix.id})}" method="post">
+                <input type="hidden" id="drawing" name="drawing" value="[]">
+            </form>
+        </main>
+        <script id="drawingData" type="application/json" th:inline="javascript">
+            /*[[${dibuix.figures}]]*/ []
+        </script>
+        <script th:src="@{/js/veureDibuix.js}" defer>
+        </script>
+    </body>
+</html>

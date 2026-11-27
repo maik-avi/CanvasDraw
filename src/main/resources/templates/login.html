@@ -1,30 +1,39 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Document</title>
-</head>
-<body>
-<form method="post"
-      th:action="@{/login}"
-      th:object="${loginForm}">
-
-    <label>Nom d'usuari</label>
-    <input type="text" th:field="*{username}">
-    <p th:errors="*{username}"></p>
-
-    <label>Password</label>
-    <input type="password" th:field="*{password}">
-    <p th:errors="*{password}"></p>
-
-    <p th:if="${message != null}" th:text="${message}"></p>
-
-    <button type="submit">Entrar</button>
-
-    <br>
-
-    <a th:href="@{/register}">Crear un compte</a>
-</form>
-</body>
+<!DOCTYPE html>
+<html lang="ca" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#f5f4ef">
+        <title>Iniciar sessió · Geometria</title>
+        <link rel="stylesheet" th:href="@{/js/style.css}">
+    </head>
+    <body class="auth-page">
+        <main class="auth-layout">
+            <section class="auth-form-area">
+                <a class="brand auth-brand" th:href="@{/login}">
+                    <span>Geometria<span class="brand-dot">.</span></span>
+                </a>
+                <div class="auth-card">
+                    <p class="eyebrow">GEOMETRIA / DRAWINGS</p>
+                    <h2>Hola de nou.</h2>
+                    <p class="muted">Entra per continuar amb els teus dibuixos.</p>
+                    <form class="form-stack" method="post" th:action="@{/login}" th:object="${loginForm}">
+                        <div class="field">
+                            <label for="username">Nom d'usuari</label>
+                            <input type="text" th:field="*{username}" autocomplete="username" placeholder="El teu usuari">
+                            <p class="field-error" th:errors="*{username}"></p>
+                        </div>
+                        <div class="field">
+                            <label for="password">Contrasenya</label>
+                            <input type="password" th:field="*{password}" autocomplete="current-password" placeholder="La teva contrasenya">
+                            <p class="field-error" th:errors="*{password}"></p>
+                        </div>
+                        <p class="form-message" role="alert" th:if="${message != null}" th:text="${message}"></p>
+                        <button class="button button-primary button-full" type="submit">Entrar <span aria-hidden="true">→</span></button>
+                    </form>
+                    <p class="auth-bottom">Encara no tens compte? <a th:href="@{/register}">Registra’t</a></p>
+                </div>
+            </section>
+        </main>
+    </body>
 </html>
